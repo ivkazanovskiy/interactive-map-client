@@ -12,7 +12,7 @@ type TDrawOption = {
   mapData: TMapData;
 };
 type TKeys = "mouse" | "char" | "offset";
-type TCacheKeys = "charMemo" | "dragMemo";
+type TCacheKeys = "charMemo" | "dragMemo" | "offsetMemo";
 
 type TMapData = Record<TKeys, TCoord> &
   Partial<Record<TCacheKeys, TCoord | null>>;
@@ -37,22 +37,22 @@ class Cell {
     ctx.beginPath();
     ctx.lineWidth = 1;
 
-    if (this.doesIncludesCoords(mapData.char, mapData.offset)) {
+    if (this.doesIncludesCoords(mapData.char, mapData.offset, zoom)) {
       ctx.strokeStyle = "green";
     } else if (
       mapData.charMemo &&
-      this.doesIncludesCoords(mapData.charMemo, mapData.offset)
+      this.doesIncludesCoords(mapData.charMemo, mapData.offset, zoom)
     ) {
       ctx.strokeStyle = "black";
-    } else if (this.doesIncludesCoords(mapData.mouse, mapData.offset)) {
+    } else if (this.doesIncludesCoords(mapData.mouse, mapData.offset, zoom)) {
       ctx.strokeStyle = "red";
     } else {
       ctx.strokeStyle = "gray";
     }
 
     ctx.rect(
-      (this.startX + mapData.offset.x) * zoom,
-      (this.startY + mapData.offset.y) * zoom,
+      this.startX * zoom + mapData.offset.x,
+      this.startY * zoom + mapData.offset.y,
       this.cellSize * zoom,
       this.cellSize * zoom
     );
@@ -60,14 +60,20 @@ class Cell {
     ctx.closePath();
   }
 
-  private doesIncludesCoords(coord: TCoord, offset: TCoord): boolean {
+  private doesIncludesCoords(
+    coord: TCoord,
+    offset: TCoord,
+    zoom: number
+  ): boolean {
     if (!coord) return false;
 
+    const fieldX = (coord.x - offset.x) / zoom;
+    const fieldY = (coord.y - offset.y) / zoom;
     return (
-      this.startX + offset.x <= coord.x &&
-      this.startY + offset.y <= coord.y &&
-      this.startX + offset.x + this.cellSize > coord.x &&
-      this.startY + offset.y + this.cellSize > coord.y
+      this.startX <= fieldX &&
+      this.startY <= fieldY &&
+      this.startX + this.cellSize > fieldX &&
+      this.startY + this.cellSize > fieldY
     );
   }
 }
@@ -156,19 +162,20 @@ export function Canvas(props: {
         });
         break;
       case 2: {
-        if (mapData.dragMemo) {
-          setMapData({
-            ...mapData,
-            offset: {
-              // TODO: set correct flow for zoom
-              x: coord.x - mapData.dragMemo.x,
-              y: coord.y - mapData.dragMemo.y,
-              // x: (coord.x - mapData.dragMemo.x) / props.zoom,
-              // y: (coord.y - mapData.dragMemo.y) / props.zoom,
-            },
-            mouse: coord,
-          });
-        }
+        if (!mapData.dragMemo) return;
+        if (!mapData.offsetMemo) return;
+
+        const diffX = coord.x - mapData.dragMemo.x;
+        const diffY = coord.y - mapData.dragMemo.y;
+
+        setMapData({
+          ...mapData,
+          offset: {
+            x: mapData.offsetMemo.x + diffX,
+            y: mapData.offsetMemo.y + diffY,
+          },
+          mouse: coord,
+        });
       }
     }
   };
@@ -204,8 +211,12 @@ export function Canvas(props: {
       setMapData({
         ...mapData,
         dragMemo: {
-          x: coord.x - mapData.offset.x,
-          y: coord.y - mapData.offset.y,
+          x: coord.x,
+          y: coord.y,
+        },
+        offsetMemo: {
+          x: mapData.offset.x,
+          y: mapData.offset.y,
         },
       });
     }
