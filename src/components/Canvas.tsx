@@ -37,14 +37,14 @@ class Cell {
     ctx.beginPath();
     ctx.lineWidth = 1;
 
-    if (this.doesIncludesCoords(mapData.char, mapData.offset, zoom)) {
+    if (this.doesIncludeCoords(mapData.char, mapData.offset, zoom)) {
       ctx.strokeStyle = "green";
     } else if (
       mapData.charMemo &&
-      this.doesIncludesCoords(mapData.charMemo, mapData.offset, zoom)
+      this.doesIncludeCoords(mapData.charMemo, mapData.offset, zoom)
     ) {
       ctx.strokeStyle = "black";
-    } else if (this.doesIncludesCoords(mapData.mouse, mapData.offset, zoom)) {
+    } else if (this.doesIncludeCoords(mapData.mouse, mapData.offset, zoom)) {
       ctx.strokeStyle = "red";
     } else {
       ctx.strokeStyle = "gray";
@@ -60,7 +60,7 @@ class Cell {
     ctx.closePath();
   }
 
-  private doesIncludesCoords(
+  private doesIncludeCoords(
     coord: TCoord,
     offset: TCoord,
     zoom: number
