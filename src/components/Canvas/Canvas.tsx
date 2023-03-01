@@ -1,6 +1,12 @@
 import { useEffect, useRef, MouseEventHandler, useState } from "react";
 import { Field } from "./Field";
 import { TCoord, TMapData } from "./types/map.types";
+import io from "socket.io-client";
+
+const socket = io("localhost:3000", {
+  transports: ["websocket"],
+  path: "/socket.io",
+});
 
 /**
  * converts canvas coordinates to map coordinates
@@ -27,6 +33,7 @@ export function Canvas(props: {
   cellSize: number;
   zoom: number;
 }) {
+  const [isConnected, setIsConnected] = useState(socket.connected);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const defaultCoord = { x: 0, y: 0 };
 
@@ -35,6 +42,26 @@ export function Canvas(props: {
     mouse: defaultCoord,
     offset: defaultCoord,
   });
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      setIsConnected(true);
+    });
+
+    socket.on("disconnect", () => {
+      setIsConnected(false);
+    });
+
+    socket.on("pong", (data) => {
+      console.log(data);
+    });
+
+    return () => {
+      socket.off("connect");
+      socket.off("disconnect");
+      socket.off("pong");
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -112,6 +139,7 @@ export function Canvas(props: {
     }
 
     if (mapData.charMemo && !areEqualCoords(fieldCoord, mapData.charMemo)) {
+      socket.emit("ping", "test");
       setMapData({ ...mapData, charMemo: null, char: fieldCoord });
     }
   };
