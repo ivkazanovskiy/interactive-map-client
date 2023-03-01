@@ -2,10 +2,24 @@ import { useEffect, useRef, MouseEventHandler, useState } from "react";
 import { Field } from "./Field";
 import { TCoord, TMapData } from "./types/map.types";
 
-const ind = (coord: TCoord, cellSize: number) =>
-  `${Math.floor(coord.x / cellSize) * cellSize}:${
-    Math.floor(coord.y / cellSize) * cellSize
-  }`;
+/**
+ * converts canvas coordinates to map coordinates
+ */
+const getCurrentCellId = (
+  mouse: TCoord,
+  offset: TCoord,
+  cellSize: number,
+  zoom: number
+): TCoord => {
+  const x = Math.floor((mouse.x - offset.x) / (zoom * cellSize));
+  const y = Math.floor((mouse.y - offset.y) / (zoom * cellSize));
+
+  return { x, y };
+};
+
+const areEqualCoords = (first: TCoord, second: TCoord): boolean => {
+  return first.x === second.x && first.y === second.y;
+};
 
 export function Canvas(props: {
   width: number;
@@ -41,25 +55,32 @@ export function Canvas(props: {
   }, [mapData, props.zoom]);
 
   const moveMouse: MouseEventHandler<HTMLCanvasElement> = (event) => {
-    const coord = {
+    const canvasCoord = {
       x: event.nativeEvent.offsetX,
       y: event.nativeEvent.offsetY,
     };
+
+    const fieldCoord = getCurrentCellId(
+      canvasCoord,
+      mapData.offset,
+      props.cellSize,
+      props.zoom
+    );
 
     switch (event.buttons) {
       case 0:
         // without pushed button
         setMapData({
           ...mapData,
-          mouse: coord,
+          mouse: fieldCoord,
         });
         break;
       case 2: {
         if (!mapData.dragMemo) return;
         if (!mapData.offsetMemo) return;
 
-        const diffX = coord.x - mapData.dragMemo.x;
-        const diffY = coord.y - mapData.dragMemo.y;
+        const diffX = canvasCoord.x - mapData.dragMemo.x;
+        const diffY = canvasCoord.y - mapData.dragMemo.y;
 
         setMapData({
           ...mapData,
@@ -67,30 +88,31 @@ export function Canvas(props: {
             x: mapData.offsetMemo.x + diffX,
             y: mapData.offsetMemo.y + diffY,
           },
-          mouse: coord,
+          mouse: fieldCoord,
         });
       }
     }
   };
 
   const clickCell: MouseEventHandler<HTMLCanvasElement> = (event) => {
-    const coord = {
+    const canvasCoord = {
       x: event.nativeEvent.offsetX,
       y: event.nativeEvent.offsetY,
     };
 
-    if (
-      !mapData.charMemo &&
-      ind(coord, props.cellSize) === ind(mapData.char, props.cellSize)
-    ) {
-      setMapData({ ...mapData, charMemo: coord });
+    const fieldCoord = getCurrentCellId(
+      canvasCoord,
+      mapData.offset,
+      props.cellSize,
+      props.zoom
+    );
+
+    if (!mapData.charMemo && areEqualCoords(fieldCoord, mapData.char)) {
+      setMapData({ ...mapData, charMemo: fieldCoord });
     }
 
-    if (
-      mapData.charMemo &&
-      ind(coord, props.cellSize) !== ind(mapData.charMemo, props.cellSize)
-    ) {
-      setMapData({ ...mapData, charMemo: null, char: coord });
+    if (mapData.charMemo && !areEqualCoords(fieldCoord, mapData.charMemo)) {
+      setMapData({ ...mapData, charMemo: null, char: fieldCoord });
     }
   };
 

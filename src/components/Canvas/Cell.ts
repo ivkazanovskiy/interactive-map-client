@@ -11,47 +11,58 @@ export class Cell {
     this.id = `${startX}:${startY}:${cellSize}`;
   }
 
-  draw({ ctx, mapData }: TDrawOption, zoom: number) {
+  default({ ctx, mapData }: TDrawOption) {
     ctx.beginPath();
     ctx.lineWidth = 1;
-
-    if (this.doesIncludeCoords(mapData.char, mapData.offset, zoom)) {
-      ctx.strokeStyle = "green";
-    } else if (
-      mapData.charMemo &&
-      this.doesIncludeCoords(mapData.charMemo, mapData.offset, zoom)
-    ) {
-      ctx.strokeStyle = "black";
-    } else if (this.doesIncludeCoords(mapData.mouse, mapData.offset, zoom)) {
-      ctx.strokeStyle = "red";
-    } else {
-      ctx.strokeStyle = "gray";
-    }
-
+    ctx.strokeStyle = "gray";
     ctx.rect(
-      this.startX * zoom + mapData.offset.x,
-      this.startY * zoom + mapData.offset.y,
-      this.cellSize * zoom,
-      this.cellSize * zoom
+      this.startX + mapData.offset.x,
+      this.startY + mapData.offset.y,
+      this.cellSize,
+      this.cellSize
     );
     ctx.stroke();
     ctx.closePath();
   }
 
-  private doesIncludeCoords(
-    coord: TCoord,
-    offset: TCoord,
-    zoom: number
-  ): boolean {
-    if (!coord) return false;
-
-    const fieldX = (coord.x - offset.x) / zoom;
-    const fieldY = (coord.y - offset.y) / zoom;
-    return (
-      this.startX <= fieldX &&
-      this.startY <= fieldY &&
-      this.startX + this.cellSize > fieldX &&
-      this.startY + this.cellSize > fieldY
+  hover({ ctx, mapData }: TDrawOption) {
+    ctx.beginPath();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "red";
+    ctx.rect(
+      this.startX + mapData.offset.x,
+      this.startY + mapData.offset.y,
+      this.cellSize,
+      this.cellSize
     );
+    ctx.stroke();
+    ctx.closePath();
+  }
+
+  memo({ ctx, mapData }: TDrawOption) {
+    ctx.beginPath();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "red";
+    ctx.rect(
+      this.startX + mapData.offset.x,
+      this.startY + mapData.offset.y,
+      this.cellSize,
+      this.cellSize
+    );
+    ctx.stroke();
+    ctx.closePath();
+  }
+
+  occupied({ ctx, mapData }: TDrawOption) {
+    ctx.beginPath();
+    ctx.fillStyle = "cyan";
+    ctx.fillRect(
+      this.startX + mapData.offset.x,
+      this.startY + mapData.offset.y,
+      this.cellSize,
+      this.cellSize
+    );
+
+    ctx.closePath();
   }
 }
