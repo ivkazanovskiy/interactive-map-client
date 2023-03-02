@@ -8,6 +8,14 @@ const socket = io("localhost:3000", {
   path: "/socket.io",
 });
 
+type CanvasProps = {
+  width: number;
+  height: number;
+  cellSize: number;
+  zoom: number;
+  backgroundImage?: string;
+};
+
 /**
  * converts canvas coordinates to map coordinates
  */
@@ -27,12 +35,13 @@ const areEqualCoords = (first: TCoord, second: TCoord): boolean => {
   return first.x === second.x && first.y === second.y;
 };
 
-export default function Canvas(props: {
-  width: number;
-  height: number;
-  cellSize: number;
-  zoom: number;
-}) {
+export default function Canvas({
+  width,
+  height,
+  cellSize,
+  zoom,
+  backgroundImage,
+}: CanvasProps) {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const defaultCoord = { x: 0, y: 0 };
@@ -69,17 +78,12 @@ export default function Canvas(props: {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = props.width;
-    canvas.height = props.height;
+    canvas.width = width;
+    canvas.height = height;
 
-    const field = new Field(
-      props.width,
-      props.height,
-      props.cellSize,
-      props.zoom
-    );
+    const field = new Field(width, height, cellSize, zoom);
     field.draw({ ctx, mapData });
-  }, [mapData, props.zoom]);
+  }, [mapData, zoom]);
 
   const moveMouse: MouseEventHandler<HTMLCanvasElement> = (event) => {
     const canvasCoord = {
@@ -90,8 +94,8 @@ export default function Canvas(props: {
     const fieldCoord = getCurrentCellId(
       canvasCoord,
       mapData.offset,
-      props.cellSize,
-      props.zoom
+      cellSize,
+      zoom
     );
 
     switch (event.buttons) {
@@ -130,8 +134,8 @@ export default function Canvas(props: {
     const fieldCoord = getCurrentCellId(
       canvasCoord,
       mapData.offset,
-      props.cellSize,
-      props.zoom
+      cellSize,
+      zoom
     );
 
     if (!mapData.charMemo && areEqualCoords(fieldCoord, mapData.char)) {
@@ -168,11 +172,18 @@ export default function Canvas(props: {
   return (
     <canvas
       ref={canvasRef}
-      className="border-2"
       onMouseMove={moveMouse}
       onClick={clickCell}
       onContextMenu={(e) => e.preventDefault()} // disable right click context menu
       onMouseDown={saveDragCoord}
+      /**
+       * @TODO - find how to do this styling with Tailwind
+       */
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     />
   );
 }
