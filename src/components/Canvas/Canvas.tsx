@@ -27,7 +27,7 @@ const areEqualCoords = (first: TCoord, second: TCoord): boolean => {
   return first.x === second.x && first.y === second.y;
 };
 
-export function Canvas(props: {
+export default function Canvas(props: {
   width: number;
   height: number;
   cellSize: number;
@@ -73,8 +73,8 @@ export function Canvas(props: {
     canvas.height = props.height;
 
     const field = new Field(
-      canvas.width,
-      canvas.height,
+      props.width,
+      props.height,
       props.cellSize,
       props.zoom
     );

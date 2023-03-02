@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Canvas } from "./Canvas/Canvas";
+import Canvas from "./Canvas/Canvas";
 
 export default function Map() {
   const inputRef = useRef<HTMLInputElement>(null);
