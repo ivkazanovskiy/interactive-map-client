@@ -11,4 +11,4 @@ RUN yarn build
 FROM node:18-alpine
 WORKDIR /usr/src/app
 
-COPY --from=builder /dist ./dist
+COPY --from=builder /app/dist ./dist
