@@ -1,0 +1,58 @@
+name: Deployment
+
+on:
+  push:
+    branches: [ "deploy" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: 
+      name: production
+      url: https://github.com
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: 
+      name: production
+    steps:
+      - 
+        uses: actions/checkout@v2
+      -
+        name: Deploy to server
+        env:
+          IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
+          CONTAINER: ${{ github.event.repository.name }}
+          BUILD_PATH: ${{ vars.BUILD_PATH }}
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          envs: IMAGE,CONTAINER,BUILD_PATH
+          script: |
+            docker rm /$CONTAINER
+            docker rmi /$IMAGE
+            docker run --name $CONTAINER -v client-build:$BUILD_PATH -d $IMAGE
