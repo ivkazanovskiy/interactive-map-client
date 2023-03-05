@@ -3,7 +3,7 @@ name: Deployment
 on:
   push:
     tags:
-    - 'v\d+\.\d+\.\d+\.'
+    - 'v[0-9].\d+\.\d+'
 
 jobs:
   build:
