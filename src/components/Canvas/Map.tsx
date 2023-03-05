@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Canvas from "./Canvas/Canvas";
+import Canvas from "./Canvas";
 
 export default function Map() {
   const [zoom, setZoom] = useState<number>(1);

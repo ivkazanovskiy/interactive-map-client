@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import Map from "./components/Map";
+import Map from "./components/Canvas/Map";
 import { isAuthorizedState } from "./states/isAuth";
 import { config } from "./config";
 import { useEffect } from "react";
