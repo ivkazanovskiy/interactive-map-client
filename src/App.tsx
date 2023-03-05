@@ -1,22 +1,31 @@
-import { useEffect } from "react";
+import axios, { AxiosError } from "axios";
+import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import Map from "./components/Map";
 import { isAuthorizedState } from "./states/isAuth";
+import { config } from "./config";
+import { useEffect } from "react";
 
 function App() {
+  const [isAuthorized, setIsAuthorized] = useRecoilState(isAuthorizedState);
   const navigate = useNavigate();
-  const [isAuthorized] = useRecoilState(isAuthorizedState);
 
-  useEffect(() => {
-    if (!isAuthorized) navigate("/login");
-  }, [isAuthorized]);
+  const checkState = useMutation(() => axios.get(config.backendUrl + "/auth"), {
+    onSuccess: () => {
+      setIsAuthorized(true);
+    },
+    onError: (err: AxiosError) => {
+      setIsAuthorized(false);
+      navigate("/login");
+    },
+  });
 
-  return (
-    <>
-      <Map></Map>
-    </>
-  );
+  useEffect(() => checkState.mutate(), []);
+
+  if (isAuthorized) return <Map></Map>;
+
+  return <></>;
 }
 
 export default App;
