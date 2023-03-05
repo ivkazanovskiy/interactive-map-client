@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Canvas } from "./Canvas/Canvas";
-
+import Canvas from "./Canvas/Canvas";
 
 export default function Map() {
   const [zoom, setZoom] = useState<number>(1);
@@ -15,7 +14,9 @@ export default function Map() {
 
   return (
     <div className=" w-[500px] h-[500px] flex-col border-2 border-cyan-500 flex items-center justify-center">
-      <label htmlFor="vol" className=" text-green-500 ">Zoom (between 1 and 3):</label>
+      <label htmlFor="vol" className=" text-green-500 ">
+        Zoom (between 1 and 3):
+      </label>
       <input
         type="range"
         id="vol"

@@ -1,4 +1,4 @@
-import { TCoord, TDrawOption } from "./types/map.types";
+import { TDrawOption } from "./types/map.types";
 
 export class Cell {
   id: string;
@@ -6,7 +6,7 @@ export class Cell {
   constructor(
     public startX: number,
     public startY: number,
-    public cellSize: number
+    public cellSize: number,
   ) {
     this.id = `${startX}:${startY}:${cellSize}`;
   }
@@ -19,7 +19,7 @@ export class Cell {
       this.startX + mapData.offset.x,
       this.startY + mapData.offset.y,
       this.cellSize,
-      this.cellSize
+      this.cellSize,
     );
     ctx.stroke();
     ctx.closePath();
@@ -33,7 +33,7 @@ export class Cell {
       this.startX + mapData.offset.x,
       this.startY + mapData.offset.y,
       this.cellSize,
-      this.cellSize
+      this.cellSize,
     );
     ctx.stroke();
     ctx.closePath();
@@ -47,7 +47,7 @@ export class Cell {
       this.startX + mapData.offset.x,
       this.startY + mapData.offset.y,
       this.cellSize,
-      this.cellSize
+      this.cellSize,
     );
     ctx.stroke();
     ctx.closePath();
@@ -60,7 +60,7 @@ export class Cell {
       this.startX + mapData.offset.x,
       this.startY + mapData.offset.y,
       this.cellSize,
-      this.cellSize
+      this.cellSize,
     );
 
     ctx.closePath();
