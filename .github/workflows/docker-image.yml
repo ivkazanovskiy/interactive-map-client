@@ -58,4 +58,4 @@ jobs:
             docker rm /$CONTAINER
             docker rmi /$IMAGE
             docker run --name $CONTAINER -d $IMAGE
-            docker cp $CONTAINER:/build/. /var/lib/docker/volumes/client-build/_data/* 
+            docker cp $CONTAINER:/build/. /var/lib/docker/volumes/client-build/_data
