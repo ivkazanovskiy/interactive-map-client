@@ -7,7 +7,7 @@ export default function Map() {
 
   return (
     <div className=" w-[500px] h-[500px] flex-col border-2 border-cyan-500 flex items-center justify-center">
-      <label htmlFor="vol" className=" text-red-500 ">Zoom (between 1 and 3):</label>
+      <label htmlFor="vol" className=" text-green-500 ">Zoom (between 1 and 3):</label>
       <input
         ref={inputRef}
         type="range"

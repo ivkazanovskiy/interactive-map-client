@@ -8,7 +8,7 @@ COPY . .
 RUN yarn build
 
 
-FROM node:18-alpine
-WORKDIR /usr/src/app
+FROM alpine
+WORKDIR /build
 
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/dist .

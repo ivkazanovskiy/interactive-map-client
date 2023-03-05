@@ -3,7 +3,7 @@ name: Deployment
 on:
   push:
     tags:
-    - '*'
+    - 'v\d+\.\d+\.\d+\.'
 
 jobs:
   build:
@@ -57,4 +57,5 @@ jobs:
             rm -rf /var/lib/docker/volumes/client-build/_data/* 
             docker rm /$CONTAINER
             docker rmi /$IMAGE
-            docker run --name $CONTAINER -v client-build:$BUILD_PATH -d $IMAGE
+            docker run --name $CONTAINER -d $IMAGE
+            docker cp $CONTAINER:/build/. /var/lib/docker/volumes/client-build/_data/* 
