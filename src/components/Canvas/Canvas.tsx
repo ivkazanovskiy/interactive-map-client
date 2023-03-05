@@ -2,8 +2,9 @@ import { useEffect, useRef, MouseEventHandler, useState } from "react";
 import { Field } from "./Field";
 import { TCoord, TMapData } from "./types/map.types";
 import io from "socket.io-client";
+import { config } from "../../config";
 
-const socket = io("localhost:3000", {
+const socket = io(config.backendUrl, {
   transports: ["websocket"],
   path: "/socket.io",
 });
@@ -23,7 +24,7 @@ const getCurrentCellId = (
   mouse: TCoord,
   offset: TCoord,
   cellSize: number,
-  zoom: number
+  zoom: number,
 ): TCoord => {
   const x = Math.floor((mouse.x - offset.x) / (zoom * cellSize));
   const y = Math.floor((mouse.y - offset.y) / (zoom * cellSize));
@@ -95,7 +96,7 @@ export default function Canvas({
       canvasCoord,
       mapData.offset,
       cellSize,
-      zoom
+      zoom,
     );
 
     switch (event.buttons) {
@@ -135,7 +136,7 @@ export default function Canvas({
       canvasCoord,
       mapData.offset,
       cellSize,
-      zoom
+      zoom,
     );
 
     if (!mapData.charMemo && areEqualCoords(fieldCoord, mapData.char)) {

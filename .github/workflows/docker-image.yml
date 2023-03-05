@@ -2,8 +2,10 @@ name: Deployment
 
 on:
   push:
+    branches:
+      - "master"
     tags:
-    - 'v[0-9].\d+\.\d+'
+      - 'v[0-9].\d+\.\d+'
 
 jobs:
   build:
