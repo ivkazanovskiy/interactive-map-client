@@ -13,7 +13,10 @@ export default function Map() {
   };
 
   return (
-    <div className=" w-[500px] h-[500px] flex-col border-2 border-cyan-500 flex items-center justify-center">
+    <div
+      className=" w-[500px] h-[500px] flex-col border-2 border-cyan-500 flex justify-center items-center"
+      style={{ overflow: "hidden" }}
+    >
       <label htmlFor="vol" className=" text-green-500 ">
         Zoom (between 1 and 3):
       </label>
@@ -27,6 +30,8 @@ export default function Map() {
         onChange={(e) => setZoom(Number(e.target.value))}
       />
       <input type="file" accept="image/*" onChange={handleImageUpload} />
+      <input />
+      <input />
       <Canvas
         width={450}
         height={350}
