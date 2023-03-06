@@ -1,31 +1,34 @@
-import axios, { AxiosError } from "axios";
-import { useMutation, useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { Routes, Route } from "react-router-dom";
+import AuthProvider from "./auth/auth-context";
+import HomePage from "./auth/HomePage";
+import Layout from "./auth/Layout";
+import LoginPage from "./auth/LoginPage";
+import PublicPage from "./auth/PublicPage";
+import RequireAuthWrapper from "./auth/RequireAuthWrapper";
 import Map from "./components/Canvas/Map";
-import { isAuthorizedState } from "./states/isAuth";
-import { config } from "./config";
-import { useEffect } from "react";
 
 function App() {
-  const [isAuthorized, setIsAuthorized] = useRecoilState(isAuthorizedState);
-  const navigate = useNavigate();
+  return (
+    <AuthProvider>
+      <h1>Dungeons and dragons</h1>
 
-  const checkState = useMutation(() => axios.get(config.backendUrl + "/auth"), {
-    onSuccess: () => {
-      setIsAuthorized(true);
-    },
-    onError: (err: AxiosError) => {
-      setIsAuthorized(false);
-      navigate("/login");
-    },
-  });
-
-  useEffect(() => checkState.mutate(), []);
-
-  if (isAuthorized) return <Map></Map>;
-
-  return <></>;
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/public-page" element={<PublicPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/map"
+            element={
+              <RequireAuthWrapper>
+                <Map />
+              </RequireAuthWrapper>
+            }
+          />
+        </Route>
+      </Routes>
+    </AuthProvider>
+  );
 }
 
 export default App;
