@@ -10,7 +10,7 @@ export class Field {
     parentWidth: number,
     parentHeight: number,
     public cellSize: number,
-    public zoom: number
+    public zoom: number,
   ) {
     this.width = Math.floor(parentWidth / cellSize) * cellSize;
     this.height = Math.floor(parentHeight / cellSize) * cellSize;
@@ -52,7 +52,7 @@ export class Field {
         if (char.x === x && char.y === y) {
           cell.occupied(options);
         }
-      })
+      }),
     );
   }
 }
