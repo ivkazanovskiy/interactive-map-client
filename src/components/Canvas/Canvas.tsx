@@ -43,6 +43,7 @@ export default function Canvas({
   backgroundImage,
 }: CanvasProps) {
   const [isConnected, setIsConnected] = useState(socket.connected);
+  const [bgImagePosition, setBgImagePosition] = useState({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const defaultCoord = { x: 0, y: 0 };
 
@@ -113,6 +114,11 @@ export default function Canvas({
         const diffX = canvasCoord.x - mapData.dragMemo.x;
         const diffY = canvasCoord.y - mapData.dragMemo.y;
 
+        const newBgImagePosition = {
+          x: mapData.offsetMemo.x + diffX,
+          y: mapData.offsetMemo.y + diffY,
+        };
+
         setMapData({
           ...mapData,
           offset: {
@@ -121,6 +127,8 @@ export default function Canvas({
           },
           mouse: fieldCoord,
         });
+
+        setBgImagePosition(newBgImagePosition);
       }
     }
   };
@@ -170,20 +178,38 @@ export default function Canvas({
   };
 
   return (
-    <canvas
-      ref={canvasRef}
-      onMouseMove={moveMouse}
-      onClick={clickCell}
-      onContextMenu={(e) => e.preventDefault()} // disable right click context menu
-      onMouseDown={saveDragCoord}
-      /**
-       * @TODO - find how to do this styling with Tailwind
-       */
+    <div
       style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        position: "relative",
+        overflow: "hidden",
+        width: `${width}px`,
+        height: `${height}px`,
+        border: "2px solid teal",
       }}
-    />
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: `${bgImagePosition.y}px`,
+          left: `${bgImagePosition.x}px`,
+          backgroundSize: "cover",
+          backgroundImage: `url(${backgroundImage})`,
+          width: `${width * zoom}px`,
+          height: `${height * zoom}px`,
+        }}
+      />
+      <canvas
+        ref={canvasRef}
+        onMouseMove={moveMouse}
+        onClick={clickCell}
+        onContextMenu={(e) => e.preventDefault()} // disable right click context menu
+        onMouseDown={saveDragCoord}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+        }}
+      />
+    </div>
   );
 }
