@@ -7,7 +7,7 @@ import { TCredentials } from "../types/credentials.type";
 import { TTokens } from "../types/tokens.type";
 import { useAuth } from "./auth-context";
 
-export default function LoginPage() {
+export default function RegistrationPage() {
   let navigate = useNavigate();
   let location = useLocation();
   let auth = useAuth();
@@ -15,8 +15,8 @@ export default function LoginPage() {
   let from = location.state?.from?.pathname || "/";
 
   const loginMutation = useMutation(
-    (data: TCredentials) =>
-      axios.post<TTokens>(config.backendUrl + "/auth/login", data),
+    (data: TCredentials & { username: string }) =>
+      axios.post<TTokens>(config.backendUrl + "/auth/sign-up", data),
     {
       onSuccess: ({ data }) => {
         // TODO: validate data with zod validation
@@ -31,12 +31,7 @@ export default function LoginPage() {
       },
       onError: (err: AxiosError) => {
         console.error(err.response?.data);
-        // TODO: change strings 'at' and 'rt' with enum
-        localStorage.removeItem("at");
-        localStorage.removeItem("rt");
-        auth.signout(() => {
-          // navigate("/");
-        });
+        // TODO: add correct error handling
       },
     },
   );
@@ -47,13 +42,18 @@ export default function LoginPage() {
     let formData = new FormData(event.currentTarget);
     let email = formData.get("email");
     let password = formData.get("password");
+    let username = formData.get("username");
 
-    if (typeof email !== "string" || typeof password !== "string") {
+    if (
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      typeof username !== "string"
+    ) {
       console.error("Invalid input type"); // TODO: set alert
       return;
     }
 
-    loginMutation.mutate({ email, password });
+    loginMutation.mutate({ email, password, username });
   }
 
   return (
@@ -67,6 +67,14 @@ export default function LoginPage() {
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 w-40 my-6 p-2 border rounded"
       >
+        <label>
+          Username:{" "}
+          <input
+            className="bg-blue-100 rounded w-full border-2 border-sky-500"
+            name="username"
+            type="text"
+          />
+        </label>{" "}
         <label>
           Email:{" "}
           <input
@@ -87,7 +95,7 @@ export default function LoginPage() {
           type="submit"
           className="focus:outline-none text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1 mr-2 mb-2"
         >
-          Login
+          Registration
         </button>
       </form>
     </div>
