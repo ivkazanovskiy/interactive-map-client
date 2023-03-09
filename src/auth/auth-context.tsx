@@ -1,9 +1,11 @@
 import React from "react";
-import { fakeAuth } from "./fake-auth";
+import { TCredentials } from "../types/credentials.type";
+import { TUser } from "../types/user.type";
+import { baseAuth } from "./base-auth";
 
 interface AuthContextType {
-  user: any;
-  signin: (user: string, callback: VoidFunction) => void;
+  user: TUser | null;
+  signin: (callback: VoidFunction) => Promise<void>;
   signout: (callback: VoidFunction) => void;
 }
 
@@ -14,17 +16,17 @@ export default function AuthProvider({
 }: {
   children: React.ReactNode;
 }) {
-  let [user, setUser] = React.useState<any>(null);
+  let [user, setUser] = React.useState<TUser | null>(null);
 
-  let signin = (newUser: string, callback: VoidFunction) => {
-    return fakeAuth.signin(() => {
-      setUser(newUser);
+  let signin = (callback: VoidFunction) => {
+    return baseAuth.signin((user: TUser) => {
+      setUser(user);
       callback();
     });
   };
 
   let signout = (callback: VoidFunction) => {
-    return fakeAuth.signout(() => {
+    return baseAuth.signout(() => {
       setUser(null);
       callback();
     });
@@ -35,4 +37,4 @@ export default function AuthProvider({
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export const useAuth = () => React.useContext(AuthContext);
+export const useAuth = () => React.useContext<AuthContextType>(AuthContext);

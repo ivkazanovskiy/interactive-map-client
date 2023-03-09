@@ -10,11 +10,17 @@ export default function Layout() {
         <li>
           <Link to="/">Home Page</Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="/public-page">Public Page</Link>
-        </li>
+        </li> */}
         <li>
           <Link to="/map">Map</Link>
+        </li>
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+        <li>
+          <Link to="/registration">Registration</Link>
         </li>
       </ul>
 

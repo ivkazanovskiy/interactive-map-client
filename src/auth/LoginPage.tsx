@@ -1,4 +1,9 @@
+import axios, { AxiosError } from "axios";
+import { useRef } from "react";
+import { useMutation } from "react-query";
 import { useNavigate, useLocation } from "react-router-dom";
+import { config } from "../config";
+import { TTokens } from "../types/tokens.type";
 import { useAuth } from "./auth-context";
 
 export default function LoginPage() {
@@ -8,15 +13,46 @@ export default function LoginPage() {
 
   let from = location.state?.from?.pathname || "/";
 
+  const loginMutation = useMutation(
+    (data: { email: string; password: string }) =>
+      axios.post<TTokens>(config.backendUrl + "/auth/login", data),
+    {
+      onSuccess: ({ data }) => {
+        // TODO: validate data with zod validation
+        // TODO: change strings 'at' and 'rt' with enum
+        localStorage.setItem("at", data.accessToken);
+        localStorage.setItem("rt", data.refreshToken);
+        axios.defaults.headers["Authorization"] = `Bearer ${data.accessToken}`;
+        // setIsAuthorized(true);
+        auth.signin(() => {
+          navigate(from, { replace: true });
+        });
+      },
+      onError: (err: AxiosError) => {
+        console.error(err.response?.data);
+        // TODO: change strings 'at' and 'rt' with enum
+        localStorage.removeItem("at");
+        localStorage.removeItem("rt");
+        auth.signout(() => {
+          // navigate("/");
+        });
+      },
+    },
+  );
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     let formData = new FormData(event.currentTarget);
-    let username = formData.get("username") as string;
+    let email = formData.get("email");
+    let password = formData.get("password");
 
-    auth.signin(username, () => {
-      navigate(from, { replace: true });
-    });
+    if (typeof email !== "string" || typeof password !== "string") {
+      console.error("Invalid input type"); // TODO: set alert
+      return;
+    }
+
+    loginMutation.mutate({ email, password });
   }
 
   return (
@@ -31,11 +67,19 @@ export default function LoginPage() {
         className="flex flex-col gap-4 w-40 my-6 p-2 border rounded"
       >
         <label>
-          Username:{" "}
+          Email:{" "}
           <input
             className="bg-blue-100 rounded w-full border-2 border-sky-500"
-            name="username"
-            type="text"
+            name="email"
+            type="email"
+          />
+        </label>{" "}
+        <label>
+          Password:{" "}
+          <input
+            className="bg-blue-100 rounded w-full border-2 border-sky-500"
+            name="password"
+            type="password"
           />
         </label>{" "}
         <button

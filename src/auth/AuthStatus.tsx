@@ -12,7 +12,9 @@ export default function AuthStatus() {
   return (
     <p>
       Welcome{" "}
-      <span className="font-semibold text-green-600">{auth.user}! </span>
+      <span className="font-semibold text-green-600">
+        {auth.user.username}!{" "}
+      </span>
       <button
         type="button"
         onClick={() => {
