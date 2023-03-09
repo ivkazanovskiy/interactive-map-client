@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { MouseEventHandler, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useRecoilState } from "recoil";
+
 import { config } from "../config";
-import { isAuthorizedState } from "../states/isAuth";
+
 import { TTokens } from "../types/tokens.type";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +12,7 @@ export default function Login() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const [isAuthorized, setIsAuthorized] = useRecoilState(isAuthorizedState);
+  // const [isAuthorized, setIsAuthorized] = useRecoilState(isAuthorizedState);
 
   const mutation = useMutation(
     (data: { email: string; password: string }) =>
@@ -24,7 +24,7 @@ export default function Login() {
         localStorage.setItem("at", data.accessToken);
         localStorage.setItem("rt", data.refreshToken);
         axios.defaults.headers["Authorization"] = `Bearer ${data.accessToken}`;
-        setIsAuthorized(true);
+        // setIsAuthorized(true);
         navigate("/");
       },
       onError: (err: AxiosError) => {
@@ -32,7 +32,7 @@ export default function Login() {
         // TODO: change strings 'at' and 'rt' with enum
         localStorage.removeItem("at");
         localStorage.removeItem("rt");
-        setIsAuthorized(false);
+        // setIsAuthorized(false);
       },
     },
   );
