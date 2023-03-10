@@ -43,7 +43,7 @@ export default function Login() {
     const password = passwordRef?.current?.value;
     if (!email || !password) {
       // TODO: add client-side validation
-      console.log("enter credentials");
+      console.error("enter credentials");
       return;
     }
 

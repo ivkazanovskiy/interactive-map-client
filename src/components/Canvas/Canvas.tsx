@@ -12,9 +12,9 @@ const socket = io(config.backendUrl, {
 type CanvasProps = {
   width: number;
   height: number;
-  cellSize: number;
   zoom: number;
   backgroundImage?: string;
+  className?: React.HTMLAttributes<HTMLCanvasElement>["className"];
 };
 
 /**
@@ -23,11 +23,10 @@ type CanvasProps = {
 const getCurrentCellId = (
   mouse: TCoord,
   offset: TCoord,
-  cellSize: number,
   zoom: number,
 ): TCoord => {
-  const x = Math.floor((mouse.x - offset.x) / (zoom * cellSize));
-  const y = Math.floor((mouse.y - offset.y) / (zoom * cellSize));
+  const x = Math.floor((mouse.x - offset.x) / zoom);
+  const y = Math.floor((mouse.y - offset.y) / zoom);
 
   return { x, y };
 };
@@ -39,9 +38,9 @@ const areEqualCoords = (first: TCoord, second: TCoord): boolean => {
 export default function Canvas({
   width,
   height,
-  cellSize,
   zoom,
   backgroundImage,
+  className,
 }: CanvasProps) {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [bgImagePosition, setBgImagePosition] = useState({ x: 0, y: 0 });
@@ -80,25 +79,19 @@ export default function Canvas({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = 500;
+    canvas.height = 500;
 
-    const field = new Field(width, height, cellSize, zoom);
+    const field = new Field(width, height, zoom);
     field.draw({ ctx, mapData });
-  }, [mapData, zoom]);
+  }, [mapData, width, height, zoom]);
 
   const moveMouse: MouseEventHandler<HTMLCanvasElement> = (event) => {
     const canvasCoord = {
       x: event.nativeEvent.offsetX,
       y: event.nativeEvent.offsetY,
     };
-
-    const fieldCoord = getCurrentCellId(
-      canvasCoord,
-      mapData.offset,
-      cellSize,
-      zoom,
-    );
+    const fieldCoord = getCurrentCellId(canvasCoord, mapData.offset, zoom);
 
     switch (event.buttons) {
       case 0:
@@ -140,15 +133,22 @@ export default function Canvas({
       y: event.nativeEvent.offsetY,
     };
 
-    const fieldCoord = getCurrentCellId(
-      canvasCoord,
-      mapData.offset,
-      cellSize,
-      zoom,
-    );
+    const fieldCoord = getCurrentCellId(canvasCoord, mapData.offset, zoom);
+
+    if (
+      fieldCoord.x < 0 ||
+      fieldCoord.y < 0 ||
+      fieldCoord.x >= width ||
+      fieldCoord.y >= height
+    )
+      return;
 
     if (!mapData.charMemo && areEqualCoords(fieldCoord, mapData.char)) {
       setMapData({ ...mapData, charMemo: fieldCoord });
+    }
+
+    if (mapData.charMemo && areEqualCoords(fieldCoord, mapData.char)) {
+      setMapData({ ...mapData, charMemo: null });
     }
 
     if (mapData.charMemo && !areEqualCoords(fieldCoord, mapData.charMemo)) {
@@ -179,38 +179,35 @@ export default function Canvas({
   };
 
   return (
-    <div
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        width: `${width}px`,
-        height: `${height}px`,
-        border: "2px solid teal",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          top: `${bgImagePosition.y}px`,
-          left: `${bgImagePosition.x}px`,
-          backgroundSize: "cover",
-          backgroundImage: `url(${backgroundImage})`,
-          width: `${width * zoom}px`,
-          height: `${height * zoom}px`,
-        }}
-      />
-      <canvas
-        ref={canvasRef}
-        onMouseMove={moveMouse}
-        onClick={clickCell}
-        onContextMenu={(e) => e.preventDefault()} // disable right click context menu
-        onMouseDown={saveDragCoord}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-        }}
-      />
-    </div>
+    // <div
+    //   style={{
+    //     position: "relative",
+    //     overflow: "hidden",
+    //     width: `${width}px`,
+    //     height: `${height}px`,
+    //     border: "2px solid teal",
+    //   }}
+    // >
+    //   <div
+    //     style={{
+    //       position: "absolute",
+    //       top: `${bgImagePosition.y}px`,
+    //       left: `${bgImagePosition.x}px`,
+    //       backgroundSize: "cover",
+    //       backgroundImage: `url(${backgroundImage})`,
+    //       width: `${width * zoom}px`,
+    //       height: `${height * zoom}px`,
+    //     }}
+    //   />
+    <canvas
+      ref={canvasRef}
+      onMouseMove={moveMouse}
+      onClick={clickCell}
+      onContextMenu={(e) => e.preventDefault()} // disable right click context menu
+      onMouseDown={saveDragCoord}
+      className={className}
+      onScrollCapture={(e) => console.log(e)}
+    />
+    // </div>
   );
 }

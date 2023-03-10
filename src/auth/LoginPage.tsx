@@ -23,7 +23,7 @@ export default function LoginPage() {
         // TODO: change strings 'at' and 'rt' with enum
         localStorage.setItem("at", data.accessToken);
         localStorage.setItem("rt", data.refreshToken);
-        axios.defaults.headers["Authorization"] = `Bearer ${data.accessToken}`;
+        axios.defaults.headers["Authorization"]  = `Bearer ${data.accessToken}`;
         // setIsAuthorized(true);
         auth.signin(() => {
           navigate(from, { replace: true });

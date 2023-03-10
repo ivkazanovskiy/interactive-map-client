@@ -1,9 +1,17 @@
 import { useAuth } from "./auth-context";
 import { useLocation, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function RequireAuth({ children }: { children: JSX.Element }) {
   let auth = useAuth();
   let location = useLocation();
+  const [isFetched, setIsFetched] = useState(false);
+
+  useEffect(() => {
+    auth.signin(() => setIsFetched(true));
+  }, []);
+
+  if (!isFetched) return <> </>;
 
   if (!auth.user) {
     // Redirect them to the /login page, but save the current location they were

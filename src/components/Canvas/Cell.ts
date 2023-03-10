@@ -6,9 +6,9 @@ export class Cell {
   constructor(
     public startX: number,
     public startY: number,
-    public cellSize: number,
+    public zoom: number,
   ) {
-    this.id = `${startX}:${startY}:${cellSize}`;
+    this.id = `${startX}:${startY}:${zoom}`;
   }
 
   default({ ctx, mapData }: TDrawOption) {
@@ -18,8 +18,8 @@ export class Cell {
     ctx.rect(
       this.startX + mapData.offset.x,
       this.startY + mapData.offset.y,
-      this.cellSize,
-      this.cellSize,
+      this.zoom,
+      this.zoom,
     );
     ctx.stroke();
     ctx.closePath();
@@ -32,8 +32,8 @@ export class Cell {
     ctx.rect(
       this.startX + mapData.offset.x,
       this.startY + mapData.offset.y,
-      this.cellSize,
-      this.cellSize,
+      this.zoom,
+      this.zoom,
     );
     ctx.stroke();
     ctx.closePath();
@@ -46,8 +46,8 @@ export class Cell {
     ctx.rect(
       this.startX + mapData.offset.x,
       this.startY + mapData.offset.y,
-      this.cellSize,
-      this.cellSize,
+      this.zoom,
+      this.zoom,
     );
     ctx.stroke();
     ctx.closePath();
@@ -59,8 +59,8 @@ export class Cell {
     ctx.fillRect(
       this.startX + mapData.offset.x,
       this.startY + mapData.offset.y,
-      this.cellSize,
-      this.cellSize,
+      this.zoom,
+      this.zoom,
     );
 
     ctx.closePath();
