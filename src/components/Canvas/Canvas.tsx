@@ -191,8 +191,23 @@ export default function Canvas({
   };
 
   const handleWheel: WheelEventHandler<HTMLCanvasElement> = (event) => {
+    const coord = {
+      x: event.nativeEvent.offsetX,
+      y: event.nativeEvent.offsetY,
+    };
     const newZoom = event.deltaY > 0 ? zoom + 1 : zoom - 1;
-    if (newZoom >= zoomMin && newZoom <= zoomMax) setZoom(newZoom);
+    if (newZoom >= zoomMin && newZoom <= zoomMax) {
+      const offsetX = Math.round(
+        (coord.x * (zoom - newZoom) + newZoom * mapData.offset.x) / zoom,
+      );
+
+      const offsetY = Math.round(
+        (coord.y * (zoom - newZoom) + newZoom * mapData.offset.y) / zoom,
+      );
+
+      setMapData({ ...mapData, offset: { x: offsetX, y: offsetY } });
+      setZoom(newZoom);
+    }
   };
 
   return (
