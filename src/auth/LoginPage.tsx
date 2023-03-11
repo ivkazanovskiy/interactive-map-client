@@ -1,7 +1,8 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useRef } from "react";
 import { useMutation } from "react-query";
 import { useNavigate, useLocation } from "react-router-dom";
+import { client } from "../api/client";
 import { config } from "../config";
 import { TCredentials } from "../types/credentials.type";
 import { TTokens } from "../types/tokens.type";
@@ -15,15 +16,14 @@ export default function LoginPage() {
   let from = location.state?.from?.pathname || "/";
 
   const loginMutation = useMutation(
-    (data: TCredentials) =>
-      axios.post<TTokens>(config.backendUrl + "/auth/login", data),
+    (data: TCredentials) => client.post<TTokens>("/auth/login", data),
     {
       onSuccess: ({ data }) => {
         // TODO: validate data with zod validation
         // TODO: change strings 'at' and 'rt' with enum
         localStorage.setItem("at", data.accessToken);
         localStorage.setItem("rt", data.refreshToken);
-        axios.defaults.headers["Authorization"]  = `Bearer ${data.accessToken}`;
+        client.defaults.headers["Authorization"] = `Bearer ${data.accessToken}`;
         // setIsAuthorized(true);
         auth.signin(() => {
           navigate(from, { replace: true });

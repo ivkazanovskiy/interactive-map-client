@@ -1,8 +1,8 @@
 import { useAuth } from "./auth-context";
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export default function RequireAuth({ children }: { children: JSX.Element }) {
+export default function RequireAuth({ children }: { children?: JSX.Element }) {
   let auth = useAuth();
   let location = useLocation();
   const [isFetched, setIsFetched] = useState(false);
@@ -21,5 +21,5 @@ export default function RequireAuth({ children }: { children: JSX.Element }) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return children;
+  return children || <Outlet />;
 }

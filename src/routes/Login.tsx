@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { MouseEventHandler, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
@@ -6,6 +6,7 @@ import { config } from "../config";
 
 import { TTokens } from "../types/tokens.type";
 import { useNavigate } from "react-router-dom";
+import { client } from "../api/client";
 
 export default function Login() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -16,14 +17,14 @@ export default function Login() {
 
   const mutation = useMutation(
     (data: { email: string; password: string }) =>
-      axios.post<TTokens>(config.backendUrl + "/auth/login", data),
+      client.post<TTokens>("/auth/login", data),
     {
       onSuccess: ({ data }) => {
         // TODO: validate data with zod validation
         // TODO: change strings 'at' and 'rt' with enum
         localStorage.setItem("at", data.accessToken);
         localStorage.setItem("rt", data.refreshToken);
-        axios.defaults.headers["Authorization"] = `Bearer ${data.accessToken}`;
+        client.defaults.headers["Authorization"] = `Bearer ${data.accessToken}`;
         // setIsAuthorized(true);
         navigate("/");
       },

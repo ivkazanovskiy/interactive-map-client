@@ -1,11 +1,24 @@
 import { useState } from "react";
-import Canvas from "./Canvas";
+import { useQuery } from "react-query";
+import { Navigate, useParams } from "react-router-dom";
+import { client } from "../api/client";
+import Canvas from "../components/Canvas/Canvas";
+import { TMap } from "../types/map.type";
 
 export default function Map() {
-  // const [zoom, setZoom] = useState<number>(20);
+  let { id } = useParams();
   const [width, setWidth] = useState<number>(20);
   const [height, setHeight] = useState<number>(20);
   const [imageSrc, setImageSrc] = useState<string | undefined>();
+
+  const {
+    isError,
+    isLoading,
+    isSuccess,
+    data: response,
+  } = useQuery("getMap" + id, () => client.get<TMap>(`/map/${id}`), {
+    retry: false,
+  });
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -13,6 +26,8 @@ export default function Map() {
     const imageURL = URL.createObjectURL(file);
     setImageSrc(imageURL);
   };
+
+  if (isError) return <Navigate to="/campaign"></Navigate>;
 
   return (
     <div

@@ -249,7 +249,6 @@ export default function Canvas({
       onContextMenu={(e) => e.preventDefault()} // disable right click context menu
       onMouseDown={saveDragCoord}
       className={className}
-      onScrollCapture={(e) => console.log(e)}
       onWheel={handleWheel}
     />
     // </div>
