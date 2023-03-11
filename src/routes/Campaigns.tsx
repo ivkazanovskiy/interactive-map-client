@@ -1,7 +1,7 @@
 import { FormEventHandler, MouseEventHandler } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { client } from "../api/client";
-import Button from "../components/button";
+import Button from "../components/Button";
 import { TCampaign } from "../types/campaign.type";
 
 export default function Campaigns() {

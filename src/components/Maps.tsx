@@ -2,7 +2,7 @@ import { FormEventHandler } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { client } from "../api/client";
 import { TMap } from "../types/map.type";
-import Button from "./button";
+import Button from "./Button";
 
 type TProps = { campaignId: number };
 

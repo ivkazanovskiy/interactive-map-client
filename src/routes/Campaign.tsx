@@ -3,7 +3,6 @@ import { FormEventHandler, MouseEventHandler } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Navigate, useParams } from "react-router-dom";
 import { client } from "../api/client";
-import Button from "../components/button";
 import Maps from "../components/Maps";
 import { TCampaign } from "../types/campaign.type";
 import { TMap } from "../types/map.type";
