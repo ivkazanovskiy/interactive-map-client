@@ -34,9 +34,12 @@ const getCurrentCellId = (
   mouse: TCoord,
   offset: TCoord,
   zoom: number,
+  round = true,
 ): TCoord => {
-  const x = Math.floor((mouse.x - offset.x) / zoom);
-  const y = Math.floor((mouse.y - offset.y) / zoom);
+  const x = (mouse.x - offset.x) / zoom;
+  const y = (mouse.y - offset.y) / zoom;
+
+  if (round) return { x: Math.floor(x), y: Math.floor(y) };
 
   return { x, y };
 };
@@ -191,18 +194,26 @@ export default function Canvas({
   };
 
   const handleWheel: WheelEventHandler<HTMLCanvasElement> = (event) => {
-    const coord = {
+    const canvasCoord = {
       x: event.nativeEvent.offsetX,
       y: event.nativeEvent.offsetY,
     };
+
+    const fieldCoord = getCurrentCellId(
+      canvasCoord,
+      mapData.offset,
+      zoom,
+      false,
+    );
+
     const newZoom = event.deltaY > 0 ? zoom + 1 : zoom - 1;
     if (newZoom >= zoomMin && newZoom <= zoomMax) {
       const offsetX = Math.round(
-        (coord.x * (zoom - newZoom) + newZoom * mapData.offset.x) / zoom,
+        fieldCoord.x * (zoom - newZoom) + mapData.offset.x,
       );
 
       const offsetY = Math.round(
-        (coord.y * (zoom - newZoom) + newZoom * mapData.offset.y) / zoom,
+        fieldCoord.y * (zoom - newZoom) + mapData.offset.y,
       );
 
       setMapData({ ...mapData, offset: { x: offsetX, y: offsetY } });
