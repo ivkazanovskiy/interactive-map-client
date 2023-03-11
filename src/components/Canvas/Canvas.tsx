@@ -1,8 +1,18 @@
-import { useEffect, useRef, MouseEventHandler, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  MouseEventHandler,
+  useState,
+  WheelEventHandler,
+} from "react";
 import { Field } from "./Field";
 import { TCoord, TMapData } from "./types/map.types";
 import io from "socket.io-client";
 import { config } from "../../config";
+
+// TODO: move to env or constants storage
+const zoomMin = 10;
+const zoomMax = 50;
 
 const socket = io(config.backendUrl, {
   transports: ["websocket"],
@@ -12,7 +22,7 @@ const socket = io(config.backendUrl, {
 type CanvasProps = {
   width: number;
   height: number;
-  zoom: number;
+  // zoom: number;
   backgroundImage?: string;
   className?: React.HTMLAttributes<HTMLCanvasElement>["className"];
 };
@@ -38,11 +48,13 @@ const areEqualCoords = (first: TCoord, second: TCoord): boolean => {
 export default function Canvas({
   width,
   height,
-  zoom,
+  // zoom,
   backgroundImage,
   className,
 }: CanvasProps) {
   const [isConnected, setIsConnected] = useState(socket.connected);
+  const [zoom, setZoom] = useState<number>(20);
+
   const [bgImagePosition, setBgImagePosition] = useState({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const defaultCoord = { x: 0, y: 0 };
@@ -178,6 +190,11 @@ export default function Canvas({
     }
   };
 
+  const handleWheel: WheelEventHandler<HTMLCanvasElement> = (event) => {
+    const newZoom = event.deltaY > 0 ? zoom + 1 : zoom - 1;
+    if (newZoom >= zoomMin && newZoom <= zoomMax) setZoom(newZoom);
+  };
+
   return (
     // <div
     //   style={{
@@ -207,6 +224,7 @@ export default function Canvas({
       onMouseDown={saveDragCoord}
       className={className}
       onScrollCapture={(e) => console.log(e)}
+      onWheel={handleWheel}
     />
     // </div>
   );

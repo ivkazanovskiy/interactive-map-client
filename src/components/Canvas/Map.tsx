@@ -2,7 +2,7 @@ import { useState } from "react";
 import Canvas from "./Canvas";
 
 export default function Map() {
-  const [zoom, setZoom] = useState<number>(20);
+  // const [zoom, setZoom] = useState<number>(20);
   const [width, setWidth] = useState<number>(20);
   const [height, setHeight] = useState<number>(20);
   const [imageSrc, setImageSrc] = useState<string | undefined>();
@@ -19,7 +19,7 @@ export default function Map() {
       className=" w-full h-full flex-col border-2 border-cyan-500 flex justify-center items-center"
       style={{ overflow: "hidden" }}
     >
-      <label htmlFor="vol" className=" text-green-500 ">
+      {/* <label htmlFor="vol" className=" text-green-500 ">
         Zoom (between 1 and 3):
       </label>
       <input
@@ -30,7 +30,7 @@ export default function Map() {
         max="50"
         value={zoom}
         onChange={(e) => setZoom(Number(e.target.value))}
-      />
+      /> */}
       <label htmlFor="fieldWidth" className=" text-green-500 ">
         Width:
       </label>
@@ -61,7 +61,7 @@ export default function Map() {
       <Canvas
         width={width}
         height={height}
-        zoom={zoom}
+        // zoom={zoom}
         backgroundImage={imageSrc}
         className="border-2"
       />
