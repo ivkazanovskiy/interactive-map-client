@@ -56,8 +56,8 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           envs: IMAGE,CONTAINER,BUILD_PATH
           script: |
-            rm -rf /var/lib/docker/volumes/client-build/_data/* 
+            rm -rf ~/client/* 
             docker rm /$CONTAINER
             docker rmi /$IMAGE
             docker run --name $CONTAINER -d $IMAGE
-            docker cp $CONTAINER:/build/. /var/lib/docker/volumes/client-build/_data
+            docker cp $CONTAINER:/build/. ~/client
