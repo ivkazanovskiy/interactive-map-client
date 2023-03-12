@@ -2,7 +2,7 @@ import { useAuth } from "./auth-context";
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export default function RequireAuth({ children }: { children?: JSX.Element }) {
+export default function RequireAuth() {
   let auth = useAuth();
   let location = useLocation();
   const [isFetched, setIsFetched] = useState(false);
@@ -11,7 +11,7 @@ export default function RequireAuth({ children }: { children?: JSX.Element }) {
     auth.signin(() => setIsFetched(true));
   }, []);
 
-  if (!isFetched) return <> </>;
+  if (!isFetched) return null;
 
   if (!auth.user) {
     // Redirect them to the /login page, but save the current location they were
@@ -21,5 +21,5 @@ export default function RequireAuth({ children }: { children?: JSX.Element }) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return children || <Outlet />;
+  return <Outlet />;
 }
