@@ -1,5 +1,5 @@
 import { FormEventHandler, MouseEventHandler } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { client } from "../api/client";
 import Button from "../components/Button";
 import { TCampaign } from "../types/campaign.type";
@@ -12,7 +12,7 @@ export default function Campaigns() {
     isLoading,
     isSuccess,
     data: response,
-  } = useQuery("getCampaigns", () =>
+  } = useQuery(["getCampaigns"], () =>
     client.get<[TCampaign[], number]>("/campaign"),
   );
 
@@ -22,7 +22,7 @@ export default function Campaigns() {
       // TODO: handle error
       onError: console.error,
       // TODO: add enum
-      onSuccess: (data) => queryClient.invalidateQueries("getCampaigns"),
+      onSuccess: (data) => queryClient.invalidateQueries(["getCampaigns"]),
     },
   );
 

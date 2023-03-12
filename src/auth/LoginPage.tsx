@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { useRef } from "react";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate, useLocation } from "react-router-dom";
 import { client } from "../api/client";
 import { config } from "../config";

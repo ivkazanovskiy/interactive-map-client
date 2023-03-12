@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Navigate, useParams } from "react-router-dom";
 import { client } from "../api/client";
 import Canvas from "../components/Canvas/Canvas";
@@ -16,7 +16,7 @@ export default function Map() {
     isLoading,
     isSuccess,
     data: response,
-  } = useQuery("getMap" + id, () => client.get<TMap>(`/map/${id}`), {
+  } = useQuery(["getMap" + id], () => client.get<TMap>(`/map/${id}`), {
     retry: false,
   });
 

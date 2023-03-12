@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { MouseEventHandler, useRef } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { config } from "../config";
 

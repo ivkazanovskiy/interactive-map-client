@@ -1,5 +1,5 @@
 import { FormEventHandler } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { client } from "../api/client";
 import { TMap } from "../types/map.type";
 import Button from "./Button";
@@ -15,7 +15,7 @@ export default function Maps({ campaignId }: TProps) {
     isLoading,
     isSuccess,
     data: response,
-  } = useQuery("getMaps" + campaignId, () =>
+  } = useQuery(["getMaps" + campaignId], () =>
     client.get<[TMap[], number]>(`/map`, { params: { campaignId } }),
   );
 
@@ -27,7 +27,7 @@ export default function Maps({ campaignId }: TProps) {
       onError: console.error,
       // TODO: add enum
       onSuccess: (data) => {
-        queryClient.invalidateQueries("getMaps" + campaignId);
+        queryClient.invalidateQueries(["getMaps" + campaignId]);
       },
     },
   );
