@@ -16,7 +16,7 @@ export default function Map() {
     isLoading,
     isSuccess,
     data: response,
-  } = useQuery(["getMap" + id], () => client.get<TMap>(`/map/${id}`), {
+  } = useQuery(["map", id], () => client.get<TMap>(`/map/${id}`), {
     retry: false,
   });
 

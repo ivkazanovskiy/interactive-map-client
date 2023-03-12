@@ -17,7 +17,7 @@ export default function Campaign() {
     isLoading,
     isSuccess,
     data: response,
-  } = useQuery(["getCampaign" + id], () =>
+  } = useQuery(["campaign", id], () =>
     client.get<TCampaign>(`/campaign/${id}`),
   );
 

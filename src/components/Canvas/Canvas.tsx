@@ -95,7 +95,7 @@ export default function Canvas({
     if (!ctx) return;
 
     canvas.width = 500;
-    canvas.height = 500;
+    canvas.height = 400;
 
     const field = new Field(width, height, zoom);
     field.draw({ ctx, mapData });

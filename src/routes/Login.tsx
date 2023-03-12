@@ -1,9 +1,6 @@
 import { AxiosError } from "axios";
 import { MouseEventHandler, useRef } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
-import { config } from "../config";
-
+import { useMutation } from "@tanstack/react-query";
 import { TTokens } from "../types/tokens.type";
 import { useNavigate } from "react-router-dom";
 import { client } from "../api/client";
@@ -12,8 +9,6 @@ export default function Login() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-
-  // const [isAuthorized, setIsAuthorized] = useRecoilState(isAuthorizedState);
 
   const mutation = useMutation(
     (data: { email: string; password: string }) =>

@@ -15,7 +15,7 @@ export default function Maps({ campaignId }: TProps) {
     isLoading,
     isSuccess,
     data: response,
-  } = useQuery(["getMaps" + campaignId], () =>
+  } = useQuery(["maps", campaignId], () =>
     client.get<[TMap[], number]>(`/map`, { params: { campaignId } }),
   );
 
@@ -27,7 +27,7 @@ export default function Maps({ campaignId }: TProps) {
       onError: console.error,
       // TODO: add enum
       onSuccess: (data) => {
-        queryClient.invalidateQueries(["getMaps" + campaignId]);
+        queryClient.invalidateQueries(["maps", campaignId]);
       },
     },
   );
@@ -52,16 +52,9 @@ export default function Maps({ campaignId }: TProps) {
 
     return (
       <>
-        <form onSubmit={handleSubmit}>
-          <label>
-            New map name
-            <input
-              type="text"
-              name="name"
-              id="campaignName"
-              className="border-2"
-            />
-          </label>
+        <form onSubmit={handleSubmit} className="flex flex-col items-center">
+          <label htmlFor="mapName">New map name </label>
+          <input type="text" name="name" id="mapName" className="border-2" />
           <button type="submit">Create new map</button>
         </form>
         <div>

@@ -12,7 +12,7 @@ export default function Campaigns() {
     isLoading,
     isSuccess,
     data: response,
-  } = useQuery(["getCampaigns"], () =>
+  } = useQuery(["campaigns"], () =>
     client.get<[TCampaign[], number]>("/campaign"),
   );
 
@@ -22,7 +22,7 @@ export default function Campaigns() {
       // TODO: handle error
       onError: console.error,
       // TODO: add enum
-      onSuccess: (data) => queryClient.invalidateQueries(["getCampaigns"]),
+      onSuccess: (data) => queryClient.invalidateQueries(["campaign"]),
     },
   );
 
@@ -48,7 +48,7 @@ export default function Campaigns() {
 
     return (
       <>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="flex flex-col items-center">
           <label htmlFor="campaignName">New campaign name</label>
           <input
             type="text"

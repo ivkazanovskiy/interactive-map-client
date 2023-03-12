@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 type TProps = { to?: string; text: string };
 
 export default function Button({ to, text }: TProps) {
-  const className = "border-2";
+  const className = "border-2 w-20 h-20";
 
   if (to)
     return (
