@@ -62,7 +62,6 @@ export default function LoginPage() {
         You must log in to view the page at{" "}
         <span className="text-purple-500 underline">{from}</span>
       </p>
-
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 w-40 my-6 p-2 border rounded"
@@ -90,6 +89,15 @@ export default function LoginPage() {
           Login
         </button>
       </form>
+
+      <button
+        className="focus:outline-none text-white bg-green-600 hover:bg-green-700
+      focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1
+      mr-2 mb-2"
+      >
+        {" "}
+        <a href={`${config.backendUrl}/auth/google`}>Login with Google</a>
+      </button>
     </div>
   );
 }

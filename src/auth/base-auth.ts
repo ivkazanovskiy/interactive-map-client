@@ -25,6 +25,7 @@ export const baseAuth = {
     // TODO: validate data via zod
     localStorage.removeItem("at");
     localStorage.removeItem("rt");
+    
     callback();
   },
 };

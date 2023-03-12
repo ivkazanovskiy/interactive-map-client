@@ -7,6 +7,7 @@ import RequireAuthWrapper from "./auth/RequireAuthWrapper";
 import Map from "./routes/Map";
 import Campaigns from "./routes/Campaigns";
 import Campaign from "./routes/Campaign";
+import GoogleCallback from "./auth/GoogleCallback";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <h1>Interactive map</h1>
       <Routes>
         <Route element={<Layout />}>
+          <Route path="//auth/google/callback" element={<GoogleCallback />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registration" element={<RegistrationPage />} />
           <Route element={<RequireAuthWrapper />}>
