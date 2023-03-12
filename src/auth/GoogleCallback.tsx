@@ -14,6 +14,7 @@ export default function GoogleCallback() {
     data: response,
   } = useQuery({
     queryFn: () => client.get<TTokens>("/auth/google/callback" + search),
+    retry: 0,
   });
 
   if (isLoading) return <p>Loading...</p>;

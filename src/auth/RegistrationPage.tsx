@@ -99,6 +99,15 @@ export default function RegistrationPage() {
           Registration
         </button>
       </form>
+
+      <button
+        className="focus:outline-none text-white bg-green-600 hover:bg-green-700
+      focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1
+      mr-2 mb-2"
+      >
+        {" "}
+        <a href={`${config.backendUrl}/auth/google`}>Login with Google</a>
+      </button>
     </div>
   );
 }

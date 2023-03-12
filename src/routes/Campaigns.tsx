@@ -22,7 +22,7 @@ export default function Campaigns() {
       // TODO: handle error
       onError: console.error,
       // TODO: add enum
-      onSuccess: (data) => queryClient.invalidateQueries(["campaign"]),
+      onSuccess: (data) => queryClient.invalidateQueries(["campaigns"]),
     },
   );
 
