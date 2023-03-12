@@ -55,7 +55,14 @@ export default function Maps({ campaignId }: TProps) {
         <form onSubmit={handleSubmit} className="flex flex-col items-center">
           <label htmlFor="mapName">New map name </label>
           <input type="text" name="name" id="mapName" className="border-2" />
-          <button type="submit">Create new map</button>
+          <button
+            type="submit"
+            className="focus:outline-none text-white bg-green-600 hover:bg-green-700
+      focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1
+      mr-2 mb-2"
+          >
+            Create new map
+          </button>
         </form>
         <div>
           {maps.map(({ id, name }) => (
