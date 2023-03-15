@@ -14,7 +14,7 @@ import { config } from "../../config";
 const zoomMin = 10;
 const zoomMax = 50;
 
-const socket = io(config.backendUrl, {
+const socket = io(config.socketUrl, {
   transports: ["websocket"],
   path: "/socket.io",
 });
