@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "../auth/auth-context";
 import AuthStatus from "../auth/AuthStatus";
 
 export default function Layout() {
   let auth = useAuth();
+  useEffect(() => {}, [auth]);
 
   return (
     <div className="p-4">
@@ -13,12 +15,17 @@ export default function Layout() {
         {auth.user && (
           <>
             <li className="flex-1 flex justify-center">
-              <Link to="/">Home Page</Link>
+              <Link to="/campaign">Campaigns</Link>
             </li>
           </>
         )}
         {!auth.user && (
           <>
+            <>
+              <li className="flex-1 flex justify-center">
+                <Link to="/">Home Page</Link>
+              </li>
+            </>
             <li className="flex-1 flex justify-center">
               <Link to="/login">Login</Link>
             </li>

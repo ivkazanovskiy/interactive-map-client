@@ -5,7 +5,7 @@ import { TUser } from "../types/user.type";
 export const baseAuth = {
   async signin(callback: (user: TUser) => void) {
     try {
-      const { data, config: c1 } = await client.get<TUser>("/profile");
+      const { data } = await client.get<TUser>("/profile");
       // TODO: validate data via zod
       callback(data);
     } catch (err) {
@@ -25,7 +25,7 @@ export const baseAuth = {
     // TODO: validate data via zod
     localStorage.removeItem("at");
     localStorage.removeItem("rt");
-    
+
     callback();
   },
 };

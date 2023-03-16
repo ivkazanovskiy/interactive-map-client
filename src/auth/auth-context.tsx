@@ -19,6 +19,8 @@ export default function AuthProvider({
   let [user, setUser] = React.useState<TUser | null>(null);
 
   let signin = (callback: VoidFunction) => {
+    if (!localStorage.getItem("at")) return;
+
     return baseAuth.signin((user: TUser) => {
       setUser(user);
       callback();

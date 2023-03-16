@@ -13,6 +13,7 @@ export default function GoogleCallback() {
     error,
     data: response,
   } = useQuery({
+    queryKey: ["googleAuth", search],
     queryFn: () => client.get<TTokens>("/auth/google/callback" + search),
     retry: 0,
   });
@@ -29,5 +30,5 @@ export default function GoogleCallback() {
   client.defaults.headers[
     "Authorization"
   ] = `Bearer ${response.data.accessToken}`;
-  return <Navigate to="/" />;
+  return <Navigate to="/campaign" />;
 }
