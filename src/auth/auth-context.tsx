@@ -5,7 +5,7 @@ import { baseAuth } from "./base-auth";
 
 interface AuthContextType {
   user: TUser | null;
-  signin: (callback: VoidFunction) => Promise<void>;
+  signin: (callback: VoidFunction) => Promise<void> | void;
   signout: (callback: VoidFunction) => void;
 }
 
