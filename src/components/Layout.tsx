@@ -13,19 +13,16 @@ export default function Layout() {
 
       <ul className="text-blue-500 underline py-4 flex w-full">
         {auth.user && (
-          <>
-            <li className="flex-1 flex justify-center">
-              <Link to="/campaign">Campaigns</Link>
-            </li>
-          </>
+          <li className="flex-1 flex justify-center">
+            <Link to="/campaign">Campaigns</Link>
+          </li>
         )}
         {!auth.user && (
           <>
-            <>
-              <li className="flex-1 flex justify-center">
-                <Link to="/">Home Page</Link>
-              </li>
-            </>
+            <li className="flex-1 flex justify-center">
+              <Link to="/">Home Page</Link>
+            </li>
+
             <li className="flex-1 flex justify-center">
               <Link to="/login">Login</Link>
             </li>
