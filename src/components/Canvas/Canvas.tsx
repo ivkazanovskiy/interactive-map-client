@@ -78,7 +78,6 @@ export default function Canvas({
     });
 
     socket.on("pong", (data) => {
-      console.log(data);
     });
 
     return () => {

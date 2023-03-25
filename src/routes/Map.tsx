@@ -76,7 +76,6 @@ export default function Map() {
       <Canvas
         width={width}
         height={height}
-        // zoom={zoom}
         backgroundImage={imageSrc}
         className="border-2"
       />

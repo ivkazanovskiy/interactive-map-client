@@ -9,6 +9,7 @@ import Campaigns from "./routes/Campaigns";
 import Campaign from "./routes/Campaign";
 import GoogleCallback from "./auth/GoogleCallback";
 import Home from "./routes/Home";
+import Session from "./routes/Session";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/campaign" element={<Campaigns />} />
             <Route path="/campaign/:id" element={<Campaign />} />
             <Route path="/map/:id" element={<Map />} />
+            <Route path="/session/:id" element={<Session />} />
           </Route>
         </Route>
       </Routes>

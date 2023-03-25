@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { client } from "../api/client";
 import Button from "../components/Button";
 import { TCampaign } from "../types/campaign.type";
+import { TMultipleResponse } from "../types/multiple-response.type";
 
 export default function Campaigns() {
   const queryClient = useQueryClient();
@@ -13,7 +14,7 @@ export default function Campaigns() {
     isSuccess,
     data: response,
   } = useQuery(["campaigns"], () =>
-    client.get<[TCampaign[], number]>("/campaign"),
+    client.get<TMultipleResponse<TCampaign>>("/campaign"),
   );
 
   const newCampaign = useMutation(
@@ -44,7 +45,7 @@ export default function Campaigns() {
 
   if (isSuccess) {
     // TODO: add pagination
-    const [campaigns, count] = response.data;
+    const { result: campaigns } = response.data;
 
     return (
       <>
@@ -67,7 +68,12 @@ export default function Campaigns() {
         </form>
         <div>
           {campaigns.map(({ id, name }) => (
-            <Button key={id} text={name} to={`/campaign/${id}`} />
+            <Button
+              key={id}
+              text={name}
+              to={`/campaign/${id}`}
+              title="campaign"
+            />
           ))}
         </div>
       </>

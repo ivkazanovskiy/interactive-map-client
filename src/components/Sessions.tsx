@@ -4,10 +4,11 @@ import { client } from "../api/client";
 import { TMap } from "../types/map.type";
 import Button from "./Button";
 import { TMultipleResponse } from "../types/multiple-response.type";
+import { TSession } from "../types/session.type";
 
 type TProps = { campaignId: number };
 
-export default function Maps({ campaignId }: TProps) {
+export default function Sessions({ campaignId }: TProps) {
   const queryClient = useQueryClient();
 
   // TODO: add enum
@@ -16,19 +17,21 @@ export default function Maps({ campaignId }: TProps) {
     isLoading,
     isSuccess,
     data: response,
-  } = useQuery(["maps", campaignId], () =>
-    client.get<TMultipleResponse<TMap>>(`/map`, { params: { campaignId } }),
+  } = useQuery(["sessions", campaignId], () =>
+    client.get<TMultipleResponse<TSession>>(`/session`, {
+      params: { campaignId },
+    }),
   );
 
-  const newMap = useMutation(
+  const newSession = useMutation(
     (data: { name: string }) =>
-      client.post<TMap>("/map", { ...data, campaignId }),
+      client.post<TMap>("/session", { ...data, campaignId }),
     {
       // TODO: handle error
       onError: console.error,
       // TODO: add enum
       onSuccess: (data) => {
-        queryClient.invalidateQueries(["maps", campaignId]);
+        queryClient.invalidateQueries(["sessions", campaignId]);
       },
     },
   );
@@ -44,30 +47,40 @@ export default function Maps({ campaignId }: TProps) {
       return;
     }
 
-    newMap.mutate({ name });
+    newSession.mutate({ name });
   };
 
   if (isSuccess) {
     // TODO: add pagination
-    const { result: maps } = response.data;
+    const { result: sessions } = response.data;
 
     return (
       <>
         <form onSubmit={handleSubmit} className="flex flex-col items-center">
-          <label htmlFor="mapName">New map name </label>
-          <input type="text" name="name" id="mapName" className="border-2" />
+          <label htmlFor="sessionName">New session name </label>
+          <input
+            type="text"
+            name="name"
+            id="sessionName"
+            className="border-2"
+          />
           <button
             type="submit"
             className="focus:outline-none text-white bg-green-600 hover:bg-green-700
       focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1
       mr-2 mb-2"
           >
-            Create new map
+            Create new session
           </button>
         </form>
         <div>
-          {maps.map(({ id, name }) => (
-            <Button key={id} text={name} title="map" to={`/map/${id}`} />
+          {sessions.map(({ id, name }) => (
+            <Button
+              key={id}
+              text={name}
+              title="session"
+              to={`/session/${id}`}
+            />
           ))}
         </div>
       </>
@@ -75,5 +88,5 @@ export default function Maps({ campaignId }: TProps) {
   }
 
   //error case
-  return <div>Maps</div>;
+  return <div>Sessions</div>;
 }
