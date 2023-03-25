@@ -1,8 +1,8 @@
-# DnD Map Client
+# Interactive Map Client
 
-<!-- ![DnD Map Client Banner](./assets/banner.png) TODO: add banner later-->
+<!-- ![Interactive Map Client Banner](./assets/banner.png) TODO: add banner later-->
 
-DnD Map Client is an interactive web-based map client & editor designed for Dungeons & Dragons (DnD) campaigns. It allows users to create, edit, and share detailed and visually appealing maps for their game sessions, providing an immersive experience for both players and game masters (GMs). It features a user-friendly interface and a variety of tools to help bring your world to life.
+The main idea of the website is to provide users with intuitive interface to play different games with map and tokens. Rules of the game could be either DnD, Pathfinder, or anything else.
 
 ## Features
 
