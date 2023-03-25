@@ -85,7 +85,7 @@ export default function Session() {
       focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1
       mr-2 mb-2"
         >
-          Sent invitation
+          Send invitation
         </button>
       </form>
       <div>

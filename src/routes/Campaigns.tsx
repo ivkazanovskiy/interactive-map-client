@@ -41,50 +41,47 @@ export default function Campaigns() {
 
   if (isLoading) return <>Loading ...</>;
 
-  if (isSuccess) {
-    // TODO: add pagination
-    const { result: campaigns } = response.data;
+  if (isError) return <>Error</>;
 
-    return (
-      <>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col items-center gap-2"
-        >
-          <label htmlFor="campaignName">New campaign name</label>
-          <input
-            type="text"
-            placeholder="Campaign name"
-            name="name"
-            id="campaignName"
-            className="border-2"
-            value={campaignName}
-            onChange={(e) => setCampaignName(e.target.value)}
-          />
-          <button
-            type="submit"
-            disabled={!campaignName.length}
-            className="focus:outline-none text-white bg-green-600 hover:bg-green-700
+  // TODO: add pagination
+  const { result: campaigns } = response.data;
+
+  return (
+    <>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center gap-2"
+      >
+        <label htmlFor="campaignName">New campaign name</label>
+        <input
+          type="text"
+          placeholder="Campaign name"
+          name="name"
+          id="campaignName"
+          className="border-2"
+          value={campaignName}
+          onChange={(e) => setCampaignName(e.target.value)}
+        />
+        <button
+          type="submit"
+          disabled={!campaignName.length}
+          className="focus:outline-none text-white bg-green-600 hover:bg-green-700
       focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1
       mr-2 mb-2 disabled:opacity-50"
-          >
-            Create new campaign
-          </button>
-        </form>
-        <div>
-          {campaigns.map(({ id, name }) => (
-            <Button
-              key={id}
-              text={name}
-              to={`/campaign/${id}`}
-              title="campaign"
-            />
-          ))}
-        </div>
-      </>
-    );
-  }
-
-  // TODO: add error handling
-  return <></>;
+        >
+          Create new campaign
+        </button>
+      </form>
+      <div>
+        {campaigns.map(({ id, name }) => (
+          <Button
+            key={id}
+            text={name}
+            to={`/campaign/${id}`}
+            title="campaign"
+          />
+        ))}
+      </div>
+    </>
+  );
 }
