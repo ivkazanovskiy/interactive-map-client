@@ -1,4 +1,4 @@
-import { FormEventHandler, MouseEventHandler } from "react";
+import { FormEventHandler, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { client } from "../api/client";
 import Button from "../components/Button";
@@ -6,6 +6,7 @@ import { TCampaign } from "../types/campaign.type";
 import { TMultipleResponse } from "../types/multiple-response.type";
 
 export default function Campaigns() {
+  const [campaignName, setCampaignName] = useState("");
   const queryClient = useQueryClient();
   // TODO: add enum
   const {
@@ -23,22 +24,19 @@ export default function Campaigns() {
       // TODO: handle error
       onError: console.error,
       // TODO: add enum
-      onSuccess: (data) => queryClient.invalidateQueries(["campaigns"]),
+      onSuccess: () => {
+        queryClient.invalidateQueries(["campaigns"]);
+        setCampaignName("");
+      },
     },
   );
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
-    let formData = new FormData(event.currentTarget);
-    let name = formData.get("name");
+    if (!campaignName?.length) return;
 
-    if (typeof name !== "string") {
-      console.error("Invalid input type"); // TODO: set alert
-      return;
-    }
-
-    newCampaign.mutate({ name });
+    newCampaign.mutate({ name: campaignName });
   };
 
   if (isLoading) return <>Loading ...</>;
@@ -50,14 +48,26 @@ export default function Campaigns() {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center gap-2"
+      >
         <label htmlFor="campaignName">New campaign name</label>
-        <input type="text" name="name" id="campaignName" className="border-2" />
+        <input
+          type="text"
+          placeholder="Campaign name"
+          name="name"
+          id="campaignName"
+          className="border-2"
+          value={campaignName}
+          onChange={(e) => setCampaignName(e.target.value)}
+        />
         <button
           type="submit"
+          disabled={!campaignName.length}
           className="focus:outline-none text-white bg-green-600 hover:bg-green-700
       focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1
-      mr-2 mb-2"
+      mr-2 mb-2 disabled:opacity-50"
         >
           Create new campaign
         </button>
