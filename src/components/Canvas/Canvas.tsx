@@ -6,7 +6,7 @@ import {
   WheelEventHandler,
 } from "react";
 import { Field } from "./Field";
-import { TCoord, TMapData } from "./types/map.types";
+import { TCoord, TMapData, TToken } from "./types/map.types";
 import io from "socket.io-client";
 import { config } from "../../config";
 
@@ -63,9 +63,13 @@ export default function Canvas({
   const defaultCoord = { x: 0, y: 0 };
 
   const [mapData, setMapData] = useState<TMapData>({
-    char: defaultCoord,
     mouse: defaultCoord,
     offset: defaultCoord,
+    // TODO: replace hardcode with list of master's and player's tokens
+    tokens: [
+      { id: 1, color: "cyan", x: 0, y: 0 },
+      { id: 2, color: "navy", x: 2, y: 2 },
+    ],
   });
 
   useEffect(() => {
@@ -77,7 +81,19 @@ export default function Canvas({
       setIsConnected(false);
     });
 
-    socket.on("pong", (data) => {
+    socket.on("moveToken", ({ id, x, y }: Pick<TToken, "id" | "x" | "y">) => {
+      setMapData({
+        ...mapData,
+        tokens: mapData.tokens.map((token) =>
+          token.id === id
+            ? {
+                ...token,
+                x,
+                y,
+              }
+            : token,
+        ),
+      });
     });
 
     return () => {
@@ -157,17 +173,46 @@ export default function Canvas({
     )
       return;
 
-    if (!mapData.charMemo && areEqualCoords(fieldCoord, mapData.char)) {
-      setMapData({ ...mapData, charMemo: fieldCoord });
+    if (mapData.tokens.some((token) => areEqualCoords(fieldCoord, token))) {
+      // select any token
+      const chosenToken = mapData.tokens.find((token) =>
+        areEqualCoords(fieldCoord, token),
+      )!;
+
+      setMapData({ ...mapData, tokenMemo: chosenToken });
+      return;
     }
 
-    if (mapData.charMemo && areEqualCoords(fieldCoord, mapData.char)) {
-      setMapData({ ...mapData, charMemo: null });
+    if (mapData.tokenMemo && areEqualCoords(fieldCoord, mapData.tokenMemo)) {
+      // discard selected token
+      setMapData({ ...mapData, tokenMemo: null });
+      return;
     }
 
-    if (mapData.charMemo && !areEqualCoords(fieldCoord, mapData.charMemo)) {
-      socket.emit("ping", "test");
-      setMapData({ ...mapData, charMemo: null, char: fieldCoord });
+    if (
+      mapData.tokenMemo &&
+      !mapData.tokens.some((token) => areEqualCoords(fieldCoord, token))
+    ) {
+      // click at any empty cell
+
+      // broadcast event to other users
+      //TODO: ad event enums
+      socket.emit("moveToken", {
+        id: mapData.tokenMemo.id,
+        x: fieldCoord.x,
+        y: fieldCoord.y,
+      });
+
+      // TODO: uncomment when server-side broadcast and rooms are ready
+      // or if server does not work correctly
+      // mapData.tokenMemo.x = fieldCoord.x;
+      // mapData.tokenMemo.y = fieldCoord.y;
+
+      setMapData({
+        ...mapData,
+        tokenMemo: null,
+      });
+      return;
     }
   };
 

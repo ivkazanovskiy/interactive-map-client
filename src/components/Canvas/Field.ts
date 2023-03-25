@@ -24,7 +24,7 @@ export class Field {
 
   draw(options: TDrawOption) {
     const {
-      mapData: { mouse, char, charMemo },
+      mapData: { mouse, tokens, tokenMemo },
     } = options;
 
     // default net
@@ -40,13 +40,15 @@ export class Field {
           cell.hover(options);
         }
 
-        if (charMemo && charMemo.x === x && charMemo.y === y) {
+        if (tokenMemo && tokenMemo.x === x && tokenMemo.y === y) {
           cell.memo(options);
         }
 
-        if (char.x === x && char.y === y) {
-          cell.occupied(options);
-        }
+        tokens.forEach((token) => {
+          if (token.x === x && token.y === y) {
+            cell.occupied(options, token.color);
+          }
+        });
       }),
     );
   }

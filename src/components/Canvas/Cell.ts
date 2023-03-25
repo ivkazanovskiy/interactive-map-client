@@ -53,9 +53,9 @@ export class Cell {
     ctx.closePath();
   }
 
-  occupied({ ctx, mapData }: TDrawOption) {
+  occupied({ ctx, mapData }: TDrawOption, color: string) {
     ctx.beginPath();
-    ctx.fillStyle = "cyan";
+    ctx.fillStyle = color;
     ctx.fillRect(
       this.startX + mapData.offset.x,
       this.startY + mapData.offset.y,
