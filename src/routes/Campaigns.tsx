@@ -33,10 +33,7 @@ export default function Campaigns() {
     let formData = new FormData(event.currentTarget);
     let name = formData.get("name");
 
-    if (typeof name !== "string") {
-      console.error("Invalid input type"); // TODO: set alert
-      return;
-    }
+    if (!name?.length) return;
 
     newCampaign.mutate({ name });
   };
