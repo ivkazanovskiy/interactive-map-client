@@ -39,16 +39,7 @@ To get started, follow these steps:
 
 ## Contributing
 
-We welcome contributions from the community! To contribute, please follow these steps:
-
-1. Before you make any changes please take a look at open issues and PRs to ensure other people are not working on it already.
-2. Open an issue explaining your feature request/bugfix and maintainers will guide you on how to get started.
-3. Fork the repository and create a new branch for your feature or bugfix.
-4. Make your changes and ensure that your code adheres to the project's coding standards (ex. linting and formatting)
-5. Submit a pull request and provide a detailed description of your changes.
-6. Our team will review your PR and provide feedback.
-
-For more information about contributing, please see the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
+For information about contributing, please see the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
 
 ## License
 
