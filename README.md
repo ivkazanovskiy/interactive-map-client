@@ -25,14 +25,14 @@ To get started, follow these steps:
 2. Install the necessary dependencies:
 
    ```shell
-   cd dnd-map-client
+   cd interactive-map-client
    yarn install
    ```
 
 3. Start the app
 
    ```shell
-   yarn run dev
+   yarn dev
    ```
 
 4. Open your web browser and navigate to `http://127.0.0.1:5173/` or whatever your terminal suggests.
@@ -43,14 +43,14 @@ For information about contributing, please see the [CONTRIBUTING.md](./CONTRIBUT
 
 ## License
 
-DnD Map Client is released under the [MIT License](./LICENSE). Please see the `LICENSE` file for more information.
+Interactive Map Client is released under the [MIT License](./LICENSE). Please see the `LICENSE` file for more information.
 
 ## Support
 
-If you encounter any issues or have questions, please open an issue on our [GitHub repository](https://github.com/ivkazanovskiy/dnd-map-client/issues). We will do our best to assist you.
+If you encounter any issues or have questions, please open an issue on our [GitHub repository](https://github.com/ivkazanovskiy/interactive-map-client/issues). We will do our best to assist you.
 
 ## Credits
 
-DnD Map Client is developed and maintained by [Ivan Kazanovskiy](https://github.com/ivkazanovskiy). Special thanks to all [contributors](https://github.com/ivkazanovskiy/interactive-map-client/graphs/contributors) for their valuable input and support.
+Interactive Map Client is developed and maintained by [Ivan Kazanovskiy](https://github.com/ivkazanovskiy). Special thanks to all [contributors](https://github.com/ivkazanovskiy/interactive-map-client/graphs/contributors) for their valuable input and support.
 
 [![Follow on GitHub](https://img.shields.io/github/followers/ivkazanovskiy?style=social)](https://github.com/ivkazanovskiy)
