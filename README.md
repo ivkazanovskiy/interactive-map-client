@@ -20,7 +20,7 @@ Some of the planned features include:
 To get started, follow these steps:
 
 1. Clone the repository:
-   git clone https://github.com/ivkazanovskiy/dnd-map-client.git
+   git clone https://github.com/ivkazanovskiy/interactive-map-client.git
 
 2. Install the necessary dependencies:
 
@@ -51,6 +51,6 @@ If you encounter any issues or have questions, please open an issue on our [GitH
 
 ## Credits
 
-DnD Map Client is developed and maintained by [Ivan Kazanovskiy](https://github.com/ivkazanovskiy). Special thanks to all [contributors](https://github.com/ivkazanovskiy/dnd-map-client/graphs/contributors) for their valuable input and support.
+DnD Map Client is developed and maintained by [Ivan Kazanovskiy](https://github.com/ivkazanovskiy). Special thanks to all [contributors](https://github.com/ivkazanovskiy/interactive-map-client/graphs/contributors) for their valuable input and support.
 
 [![Follow on GitHub](https://img.shields.io/github/followers/ivkazanovskiy?style=social)](https://github.com/ivkazanovskiy)
