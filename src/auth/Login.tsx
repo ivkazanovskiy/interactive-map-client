@@ -93,8 +93,8 @@ export default function LoginPage() {
       >
         {" "}
         <a href={`${config.backendUrl}/auth/google`}>
-          Login with{" "}
           <img src={googleSvg} alt="Google" style={{ display: "inline" }} />{" "}
+          Continue with Google{" "}
         </a>
       </button>
     </div>

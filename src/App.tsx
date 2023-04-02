@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import AuthProvider, { useAuth } from "./auth/auth-context";
 import Layout from "./components/Layout";
 import LoginPage from "./auth/Login";
-import RegistrationPage from "./auth/Registration";
+import SignUpPage from "./auth/SignUp";
 import RequireAuthWrapper from "./auth/RequireAuthWrapper";
 import Map from "./routes/Map";
 import Campaigns from "./routes/Campaigns";
@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/auth/google/callback" element={<GoogleCallback />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/registration" element={<RegistrationPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
           <Route element={<RequireAuthWrapper />}>
             <Route path="/campaign" element={<Campaigns />} />
             <Route path="/campaign/:id" element={<Campaign />} />

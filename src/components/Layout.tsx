@@ -24,10 +24,10 @@ export default function Layout() {
             </li>
 
             <li className="flex-1 flex justify-center">
-              <Link to="/login">Login</Link>
+              <Link to="/login">Log in</Link>
             </li>
             <li className="flex-1 flex justify-center">
-              <Link to="/registration">Registration</Link>
+              <Link to="/sign-up">Sign up</Link>
             </li>
           </>
         )}

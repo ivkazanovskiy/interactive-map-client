@@ -8,7 +8,7 @@ import { TTokens } from "../types/tokens.type";
 import { useAuth } from "./auth-context";
 import googleSvg from "../assets/google.svg";
 
-export default function RegistrationPage() {
+export default function SignUpPage() {
   let navigate = useNavigate();
   let auth = useAuth();
 
@@ -88,7 +88,7 @@ export default function RegistrationPage() {
           type="submit"
           className="focus:outline-none text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1 mr-2 mb-2"
         >
-          Registration
+          Sign up
         </button>
       </form>
 
@@ -99,8 +99,8 @@ export default function RegistrationPage() {
       >
         {" "}
         <a href={`${config.backendUrl}/auth/google`}>
-          Registration with{" "}
           <img src={googleSvg} alt="Google" style={{ display: "inline" }} />{" "}
+          Continue with Google
         </a>
       </button>
     </div>
