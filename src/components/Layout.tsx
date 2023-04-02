@@ -24,7 +24,7 @@ export default function Layout() {
             </li>
 
             <li className="flex-1 flex justify-center">
-              <Link to="/login">Log in</Link>
+              <Link to="/login">Login</Link>
             </li>
             <li className="flex-1 flex justify-center">
               <Link to="/sign-up">Sign up</Link>
